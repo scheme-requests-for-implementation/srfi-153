@@ -20,7 +20,7 @@ John Cowan
 <p>
 <h1>Status</h1>
 
-<p>This SRFI is currently in <em>withdrawn</em> status.  Here is <a href="http://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="http://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="http://srfi-email.schemers.org/srfi-153">archive</a>.</p>
+<p>This SRFI is currently in <em>withdrawn</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="http://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-153">archive</a>.</p>
 <ul>
   <li>Received: 2017-06-27</li>
   <li>60-day deadline: 2017-08-27</li>
@@ -42,16 +42,16 @@ None at present.
 
 <h1>Rationale</h1>
 
-<p>The sets of <a href="http://srfi.schemers.org/srfi-113/srfi-113.html">SRFI 113</a> may depend on either an ordering predicate or a hash function. The sets provided here are always ordered.</p>
+<p>The sets of <a href="https://srfi.schemers.org/srfi-113/srfi-113.html">SRFI 113</a> may depend on either an ordering predicate or a hash function. The sets provided here are always ordered.</p>
 
 <p>The names in this SRFI are harmonized with the names used in SRFI 113 and
-<a href="http://srfi.schemers.org/srfi-146/srfi-146.html">SRFI 146</a>.
+<a href="https://srfi.schemers.org/srfi-146/srfi-146.html">SRFI 146</a>.
 
-<p>It's possible to use the general osets of this SRFI to contain characters, but the use of <a href="http://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead. </p>
+<p>It's possible to use the general osets of this SRFI to contain characters, but the use of <a href="https://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead. </p>
 
-<p>Osets do not have a lexical syntax representation.  It's possible to use <a href="http://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
+<p>Osets do not have a lexical syntax representation.  It's possible to use <a href="https://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
-<p>The interface to general osets depends on <a href="http://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparators. Comparators conveniently package the equality predicate of the oset with the ordering predicate needed to implement the oset efficiently.</p>
+<p>The interface to general osets depends on <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparators. Comparators conveniently package the equality predicate of the oset with the ordering predicate needed to implement the oset efficiently.</p>
 
 <h1>Specification</h1>
 
@@ -119,7 +119,7 @@ This is mentioned here once and for all.</p>
 <p><code>(oset </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 <p><code>(oset/ordered </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
-<p>Returns an oset containing <em>elements</em>.  The <em>comparator</em> argument is a <a href="http://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparator, which is used to control and distinguish the elements of the oset.
+<p>Returns an oset containing <em>elements</em>.  The <em>comparator</em> argument is a <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparator, which is used to control and distinguish the elements of the oset.
 The <code>oset/ordered</code> procedure is the same as <code>oset</code> except that 
 it is an error if the <em>elements</em> are out of order or duplicated.  It may be more efficient.</p>
 
