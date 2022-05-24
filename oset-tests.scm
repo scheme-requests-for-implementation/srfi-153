@@ -2,7 +2,7 @@
 (import (scheme char))
 (import (chibi test))
 (import (srfi 153))
-(import (srfi 128))
+(import (srfi-128))
 
 (define default-comparator (make-default-comparator))
 
