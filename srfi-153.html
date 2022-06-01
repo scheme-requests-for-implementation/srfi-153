@@ -76,7 +76,7 @@ It is not necessary for them to provide a hash function.</p>
 <ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset-unfold</code></p>
 </li><li><p><a href="#Predicates">Predicates</a>: <code>oset?</code>, <code>oset-contains?</code>, <code>oset-empty?</code>, <code>oset-disjoint?</code></p>
 </li><li><p><a href="#Accessors">Accessors</a>: <code>oset-member</code>, <code>oset-element-comparator</code></p>
-</li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-set</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-pop</code>, <code>oset-pop/reverse</code></p>
+</li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-pop</code>, <code>oset-pop/reverse</code></p>
 
 </li><li><p><a href="#Thewholeset">The whole oset</a>: <code>oset-size</code>, <code>oset-find</code>, <code>oset-count</code>, <code>oset-any?</code>, <code>oset-every?</code></p>
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>oset-map</code>, <code>oset-map/monotone</code>, <code>oset-for-each</code>, <code>oset-fold</code>, <code>oset-fold/reverse</code>, <code>oset-filter</code>, <code>oset-remove</code>, <code>oset-partition</code></p>
@@ -134,10 +134,6 @@ It is not necessary for them to provide a hash function.</p>
 <p><code>(oset-adjoin </code><em>oset element</em> ...<code>)</code></p>
 
 <p>The <code>oset-adjoin</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all its elements plus the <em>elements</em>.  If some <em>element</em> is the same as some element of <em>oset</em> (in the sense of <em>oset</em>'s comparator), the existing element prevails.</p>
-
-<p><code>(oset-set </code><em>oset element</em><code>)</code></p>
-
-<p>The <code>oset-set</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all its elements plus the <em>elements</em>.  If some <em>element</em> is the same as some element of <em>oset</em> (in the sense of <em>oset</em>'s comparator), the new element prevails.</p>
 
 <p><code>(oset-delete </code><em>oset element</em> ...<code>)</code></p>
 

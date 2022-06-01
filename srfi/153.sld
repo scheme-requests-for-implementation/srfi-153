@@ -25,7 +25,7 @@
   (export oset oset-unfold
 	  oset? oset-contains? oset-empty? oset-disjoint?
 	  oset-member oset-element-comparator
-	  oset-adjoin oset-set oset-delete oset-delete-all oset-pop
+	  oset-adjoin oset-delete oset-delete-all oset-pop
 	  oset-size oset-find oset-count oset-any? oset-every?
 	  oset-map oset-for-each oset-fold oset-fold/reverse
 	  oset-filter oset-remove oset-partition
