@@ -32,7 +32,7 @@ John Cowan
 </ul>
 
 
-<h1>Abstract</h1><p><em>Osets</em> are collections that can contain any Scheme objects, provided that a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset  appear in a fixed order determined by the comparator used to create it.
+<h1>Abstract</h1><p><em>Osets</em> are immutable collections that can contain any Scheme objects, provided that a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset  appear in a fixed order determined by the comparator used to create it.
 
 </p>
 
@@ -55,9 +55,7 @@ None at present.
 
 <h1>Specification</h1>
 
-<p>Osets are immutable.</p>
-
-<p>Osets are mutually disjoint, and disjoint from other types of Scheme objects.</p>
+<p>Osets are disjoint from other types of Scheme objects.</p>
 
 <p>It is an error for any procedure defined in this SRFI to be invoked on osets with distinct comparators (in the sense of <code>eq?</code>).</p>
 
@@ -75,19 +73,18 @@ It is not necessary for them to provide a hash function.</p>
   
 <h2 id="Procedureindex">Procedure index</h2>
 
-<ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset/ordered</code>, <code>oset-unfold</code>, <code>oset-unfold/ordered</code></p>
+<ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset-unfold</code></p>
 </li><li><p><a href="#Predicates">Predicates</a>: <code>oset?</code>, <code>oset-contains?</code>, <code>oset-empty?</code>, <code>oset-disjoint?</code></p>
 </li><li><p><a href="#Accessors">Accessors</a>: <code>oset-member</code>, <code>oset-element-comparator</code></p>
-</li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-set</code>, <code>oset-replace</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-intern</code>, <code>oset-pop</code>, <code>oset-pop/reverse</code></p>
+</li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-set</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-pop</code>, <code>oset-pop/reverse</code></p>
 
 </li><li><p><a href="#Thewholeset">The whole oset</a>: <code>oset-size</code>, <code>oset-find</code>, <code>oset-count</code>, <code>oset-any?</code>, <code>oset-every?</code></p>
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>oset-map</code>, <code>oset-map/monotone</code>, <code>oset-for-each</code>, <code>oset-fold</code>, <code>oset-fold/reverse</code>, <code>oset-filter</code>, <code>oset-remove</code>, <code>oset-partition</code></p>
 </li><li><p><a href="#Conversion">Conversion</a>: <code>oset->list</code>, <code>list->oset</code></p>
 </li><li><p><a href="#Subsets">Subsets</a>: <code>oset=?</code>, <code>oset&lt;?</code>, <code>oset>?</code>, <code>oset&lt;=?</code>, <code>oset>=?</code></p>
-</li><li><p><a href="#Settheoryoperations">Set theory operations</a>: <code>oset-union</code>, <code>oset-intersection</code>, <code>oset-difference</code>, <code>oset-xor</code></p>
+</li><li><p><a href="#Settheoreticoperations">Set theoretic operations</a>: <code>oset-union</code>, <code>oset-intersection</code>, <code>oset-difference</code>, <code>oset-xor</code></p>
 </li><li><p><a href="#Singleelements">Single elements</a>: <code>oset-min-element</code>, <code>oset-max-element</code>, <code>oset-element-predecessor</code>, <code>oset-element-successor</code></p>
 </li><li><p><a href="#Dividingosets">Dividing osets</a>: <code>oset-range=</code>, <code>oset-range&lt;</code>, <code>oset-range></code>, <code>oset-range&lt;=</code>, <code>oset-range>=</code>, <code>oset-split</code>, <code>oset-catenate</code></p>
-</li><li><p><a href="#Comparator">Comparator</a>: <code>oset-comparator</code></p>
 </li>
 
 </ul>
@@ -97,18 +94,12 @@ It is not necessary for them to provide a hash function.</p>
 <h3 id="Constructors">Constructors</h3>
 
 <p><code>(oset </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
-<p><code>(oset/ordered </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
 <p>Returns an oset containing <em>elements</em>.  The <em>comparator</em> argument is a <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparator, which is used to control and distinguish the elements of the oset.
-The <code>oset/ordered</code> procedure is the same as <code>oset</code> except that 
-it is an error if the <em>elements</em> are out of order or duplicated.  It may be more efficient.</p>
 
 <p><code>(oset-unfold </code><em>stop? mapper successor seed comparator</em><code>)</code></p>
-<p><code>(oset-unfold/ordered </code><em>stop? mapper successor seed comparator</em><code>)</code></p>
 
-<p>Create an oset as if by <code>oset</code> using <em>comparator</em>.  If the result of applying the predicate <em>stop?</em> to <em>seed</em> is true, return the oset.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  The value that <em>mapper</em> returns is added to the oset.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.
-The <code>oset-unfold/ordered</code> procedure is the same as <code>oset-unfold</code> except that 
-it is an error if the <em>elements</em> are out of order or duplicated.  It may be more efficient.</p>
+<p>Create an oset as if by <code>oset</code> using <em>comparator</em>.  If the result of applying the predicate <em>stop?</em> to <em>seed</em> is true, return the oset.  Otherwise, apply the procedure <em>mapper</em> to <em>seed</em>.  The value that <em>mapper</em> returns is added to the oset.  Then get a new seed by applying the procedure <em>successor</em> to <em>seed</em>, and repeat this algorithm.</p>
 
 <h3 id="Predicates">Predicates</h3>
 
@@ -142,30 +133,23 @@ it is an error if the <em>elements</em> are out of order or duplicated.  It may 
 
 <p><code>(oset-adjoin </code><em>oset element</em> ...<code>)</code></p>
 
+<p>The <code>oset-adjoin</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all its elements plus the <em>elements</em>.  If some <em>element</em> is the same as some element of <em>oset</em> (in the sense of <em>oset</em>'s comparator), the existing element prevails.</p>
 
-<p>The <code>oset-adjoin</code> procedure returns an oset that uses the same comparator as <code>oset</code> and contains all the values of <em>oset</em>, and in addition each <em>element</em> unless it is already equal (in the sense of the comparator) to one of the existing or newly added members.  It is an error to add an element to <i>oset</i> that does not return <code>#t</code> when passed to the type test procedure of the comparator.</p>
+<p><code>(oset-set </code><em>oset element</em><code>)</code></p>
 
-
-<p><code>(oset-replace </code><em>oset element</em><code>)</code></p>
-
-
-<p>The <code>oset-replace</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all the values of <em>oset</em> except as follows:  If <i>element</i> is equal (in the sense of <i>oset</i>'s comparator) to an existing member of <i>oset</i>, then that member is omitted and replaced by <i>element</i>.  If there is no such element in <i>oset</i>, then <i>oset</i> is returned unchanged.</p>
+<p>The <code>oset-set</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all its elements plus the <em>elements</em>.  If some <em>element</em> is the same as some element of <em>oset</em> (in the sense of <em>oset</em>'s comparator), the new element prevails.</p>
 
 <p><code>(oset-delete </code><em>oset element</em> ...<code>)</code></p>
 
-
-<p><code>(oset-delete-all </code><em>oset element-list</em><code>)</code></p>
-
-
 <p>The <code>oset-delete</code> procedure returns an oset containing all the values of <em>oset</em> except for any that are equal (in the sense of <em>oset</em>'s comparator) to one or more of the <em>elements</em>.  Any <em>element</em> that is not equal to some member of the oset is ignored.</p>
 
+<p><code>(oset-delete-all </code><em>oset element-list</em><code>)</code></p>
 
 <p>The <code>oset-delete-all</code> procedure is the same as <code>oset-delete</code>, except that it accepts a single argument which is a list of elements to be deleted.</p>
 
 <p><code>(oset-pop </code><em>oset</em> [ <em>failure</em> ])</code></p>
 
 <p><code>(oset-pop/reverse </code><em>oset</em> [ <em>failure</em> ])</code></p>
-
 
 
 <p>The <code>oset-pop</code> procedure chooses the
@@ -270,7 +254,7 @@ respect to the natural ordering of the elements.
 
 <p>Returns two values: an oset with the same comparator as <em>oset</em> that contains just the elements of <em>oset</em> that satisfy <em>predicate</em>, and another oset, also with the same comparator,  that contains just the elements of <em>oset</em> that do not satisfy <em>predicate</em>.</p>
 
-<h3 id="Conversion">Copying and conversion</h3>
+<h3 id="Conversion">Conversion</h3>
 
 <p><code>(oset-copy </code><em>oset</em><code>)</code></p><p>
 
@@ -325,7 +309,7 @@ Returns <code>#t</code> if each <em>oset</em> other than the last is a superset 
 
 </p>
 
-<h3 id="Settheoryoperations">Set theory operations</h3>
+<h3 id="Settheoreticoperations">Set theoretic operations</h3>
 
 <p><code>(oset-union </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code>
 
@@ -407,24 +391,13 @@ in <em>oset</em><sub>2</sub></code> in their natural order
 to the ordering of <em>comparator</em>.
 </p>
 
-<h2 id="Comparator">Comparator</h2><p>
-
-The following comparator is used to compare osets, and allow osets of osets, hash tables of osets, etc.
-
-</p><p><code>oset-comparator</code></p><p>
-
-Note that this comparator does not provide ordering predicates, as there is no ordering between osets.  It is an error to compare osets with different element comparators.
-<code>Oset-comparator</code> is registered
-with SRFI 128's default comparator.</p>
-
-
 </p><h1>Implementation</h1>
 
-<p>An unfinished sample implementation is in the repository of this SRFI.</p>
+<p>The sample implementation is in the repository of this SRFI.</p>
 
 <h1>Copyright</h1>
 
-<p>Copyright (C) John Cowan 2018. All Rights Reserved.</p> 
+<p>Copyright (C) John Cowan 2018,2022. All Rights Reserved.</p> 
 
 <p>Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the "Software"),

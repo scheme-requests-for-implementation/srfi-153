@@ -21,23 +21,28 @@
 ;; CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;; SOFTWARE.
 
-(define-library (srfi-153)
+(define-library (srfi 153)
   (export oset oset-unfold
 	  oset? oset-contains? oset-empty? oset-disjoint?
 	  oset-member oset-element-comparator
-	  oset-adjoin oset-replace oset-delete oset-delete-all oset-search!
+	  oset-adjoin oset-set oset-delete oset-delete-all oset-pop
 	  oset-size oset-find oset-count oset-any? oset-every?
-	  oset-map oset-for-each oset-fold
+	  oset-map oset-for-each oset-fold oset-fold/reverse
 	  oset-filter oset-remove oset-partition
-	  oset-copy oset->list list->oset list->oset!
+	  oset->list list->oset
 	  oset=? oset<? oset>? oset<=? oset>=?
 	  oset-union oset-intersection oset-difference oset-xor
-	  oset-comparator
+          oset-min-element oset-max-element
+          oset-element-predecessor oset-element-successor
+          oset-range= oset-range< oset-range> oset-range<= oset-range>=
+          oset-split oset-catenate)
+
+;; Specialized obag functions (not implemented)
 ;	  obag-sum obag-product
 ;	  obag-unique-size obag-element-count obag-for-each-unique obag-fold-unique
-          )
   (import (scheme base)
 	  (scheme case-lambda)
+          (srfi 8)
           (srfi 128)
 	  (srfi 146))
   (include "153-impl.scm"))
