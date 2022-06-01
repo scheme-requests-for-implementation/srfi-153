@@ -6,7 +6,7 @@
   (mapping M))  ; M extracts mapping
 
 (define (list->oset comp elems)
-  (S (alist->mapping (map (lambda (elem) (cons elem 1)) elems))))
+  (S (alist->mapping comp (map (lambda (elem) (cons elem 1)) elems))))
 
 (define (oset comp . elems)
   (list->oset comp elems))

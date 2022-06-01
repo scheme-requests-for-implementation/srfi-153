@@ -252,10 +252,6 @@ respect to the natural ordering of the elements.
 
 <h3 id="Conversion">Conversion</h3>
 
-<p><code>(oset-copy </code><em>oset</em><code>)</code></p><p>
-
-Returns an oset containing the elements of <em>oset</em>, and using the same comparator.
-
 </p><p><code>(oset->list </code><em>oset</em><code>)</code></p><p>
 
 Returns a newly allocated list containing the members of <em>oset</em> in order.
@@ -350,7 +346,7 @@ the thunk <em>failure</em>.
 <p>Returns a oset containing only the elements of
 the <em>oset</em> whose elements are equal to, less
 than, greater than, less than or equal to, or greater than or equal
-  to <em>obj</em>.
+  to <em>obj</em> (in the sense of the comparator of <em>oset</em>).
 </p>
 
 <p>Note: Since elements in osets are
