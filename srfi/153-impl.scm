@@ -29,22 +29,28 @@
   (mapping-disjoint? (M oset1) (M oset2)))
 
 (define (oset-member oset elem default)
-  (mapping-ref/default (M oset) elem default))
+  (if (oset-contains? oset elem) elem default))
 
 (define (oset-element-comparator oset)
   (mapping-key-comparator (M oset)))
 
-(define (alternate elems)
-  (error "alternate not defined"))
+(define (alternate keys value)
+  (define (alternate-acc keys result)
+    (if (null? keys)
+      (reverse result)
+      (alternate-acc
+         (cdr keys)
+         (cons value (cons (car keys) result)))))
+  (alternate-acc keys '()))
 
 (define (oset-adjoin oset . elems)
-  (S (apply mapping-adjoin (M oset) (alternate elems))))
+  (S (apply mapping-adjoin (M oset) (alternate elems 1))))
 
 (define (oset-delete oset . elems)
-  (S (apply mapping-delete (M oset) (alternate elems))))
+  (oset-delete-all (M oset) elems))
 
 (define (oset-delete-all oset elem-list)
-  (S (mapping-delete-all (M oset) (alternate elem-list))))
+  (S (mapping-delete-all (M oset) elem-list)))
 
 (define oset-pop
   (case-lambda
@@ -57,7 +63,9 @@
   (mapping-size (M oset)))
 
 (define (oset-find pred oset failure)
-  (mapping-find (lambda (key value) (pred key)) (M oset) failure))
+  (receive (key value)
+    (mapping-find (lambda (key value) (pred key)) (M oset) failure))
+    key)
 
 (define (oset-count pred oset failure)
   (mapping-count (lambda (key value) (pred key)) (M oset) failure))
