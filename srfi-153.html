@@ -20,7 +20,7 @@ John Cowan
 <p>
 <h1>Status</h1>
 
-<p>This SRFI is currently in <em>withdrawn</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="http://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-153">archive</a>.</p>
+<p>This SRFI is currently in <em>draft</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="http://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-153">archive</a>.</p>
 <ul>
   <li>Received: 2017-06-27</li>
   <li>60-day deadline: 2017-08-27</li>
@@ -32,7 +32,7 @@ John Cowan
 </ul>
 
 
-<h1>Abstract</h1><p><em>Osets</em> are immutable collections that can contain any Scheme objects, provided that a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset  appear in a fixed order determined by the comparator used to create it.
+<h1>Abstract</h1><p><em>Osets</em> are immutable collections that can contain any Scheme objects, provided that a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset appear in a fixed order determined by the comparator used to create it.
 
 </p>
 
@@ -41,8 +41,6 @@ John Cowan
 None at present.
 
 <h1>Rationale</h1>
-
-<p>The sets of <a href="https://srfi.schemers.org/srfi-113/srfi-113.html">SRFI 113</a> may depend on either an ordering predicate or a hash function. The sets provided here are always ordered.</p>
 
 <p>The names in this SRFI are harmonized with the names used in SRFI 113 and
 <a href="https://srfi.schemers.org/srfi-146/srfi-146.html">SRFI 146</a>.
@@ -53,17 +51,23 @@ None at present.
 
 <p>The interface to general osets depends on <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparators. Comparators conveniently package the equality predicate of the oset with the ordering predicate needed to implement the oset efficiently.</p>
 
+<p>In Java and Smalltalk terminology, the sets of this SRFI are sorted
+(in the sense of the comparator) rather than ordered (by insertion).</p>
+
 <h1>Specification</h1>
 
 <p>Osets are disjoint from other types of Scheme objects.</p>
 
-<p>It is an error for any procedure defined in this SRFI to be invoked on osets with distinct comparators (in the sense of <code>eq?</code>).</p>
+<p>It is an error for any procedure defined in this SRFI to be invoked
+on osets with distinct comparators (in the sense of <code>eq?</code>).</p>
 
-<p>It is an error to mutate any object while it is contained in a oset.</p>
+<p>It is an error to mutate any object while it is contained in an oset
+in such a way as to make it no longer the same (in the sense of the comparator)
+as its previous state.</p>
 
-<p>It is an error to add an object to a oset which does not satisfy the type test predicate of the comparator.</p>
+<p>It is an error to add an object to an oset which does not satisfy the type test predicate of the comparator.</p>
 
-<p>It is an error to add or remove an object for a oset or while iterating over it.</p>
+<p>It is an error to add or remove an object for an oset or while iterating over it.</p>
 
 <p>It is an error if comparators used with the procedures of this SRFI do not provide an ordering predicate.
 It is not necessary for them to provide a hash function.</p>
@@ -76,7 +80,7 @@ It is not necessary for them to provide a hash function.</p>
 <ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset-unfold</code></p>
 </li><li><p><a href="#Predicates">Predicates</a>: <code>oset?</code>, <code>oset-contains?</code>, <code>oset-empty?</code>, <code>oset-disjoint?</code></p>
 </li><li><p><a href="#Accessors">Accessors</a>: <code>oset-member</code>, <code>oset-element-comparator</code></p>
-</li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-pop</code>, <code>oset-pop/reverse</code></p>
+</li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-pop</code></p>
 
 </li><li><p><a href="#Thewholeset">The whole oset</a>: <code>oset-size</code>, <code>oset-find</code>, <code>oset-count</code>, <code>oset-any?</code>, <code>oset-every?</code></p>
 </li><li><p><a href="#Mappingandfolding">Mapping and folding</a>: <code>oset-map</code>, <code>oset-map/monotone</code>, <code>oset-for-each</code>, <code>oset-fold</code>, <code>oset-fold/reverse</code>, <code>oset-filter</code>, <code>oset-remove</code>, <code>oset-partition</code></p>
@@ -105,7 +109,7 @@ It is not necessary for them to provide a hash function.</p>
 
 <p><code>(oset? </code><em>obj</em><code>)</code></p>
 
-<p>Returns <code>#t</code> if <em>obj</em> is a oset, and <code>#f</code> otherwise.</p>
+<p>Returns <code>#t</code> if <em>obj</em> is an oset, and <code>#f</code> otherwise.</p>
 
 <p><code>(oset-contains? </code><em>oset element</em><code>)</code></p>
 
@@ -135,6 +139,10 @@ It is not necessary for them to provide a hash function.</p>
 
 <p>The <code>oset-adjoin</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all its elements plus the <em>elements</em>.  If some <em>element</em> is the same as some element of <em>oset</em> (in the sense of <em>oset</em>'s comparator), the existing element prevails.</p>
 
+<p><code>(oset-adjoin/replace </code><em>oset element</em> ...<code>)</code></p>
+
+<p>The <code>oset-adjoin</code> procedure returns an oset that uses the same comparator as <em>oset</em> and contains all its elements plus the <em>elements</em>.  If some <em>element</em> is the same as some element of <em>oset</em> (in the sense of <em>oset</em>'s comparator), the new element prevails.</p>
+
 <p><code>(oset-delete </code><em>oset element</em> ...<code>)</code></p>
 
 <p>The <code>oset-delete</code> procedure returns an oset containing all the values of <em>oset</em> except for any that are equal (in the sense of <em>oset</em>'s comparator) to one or more of the <em>elements</em>.  Any <em>element</em> that is not equal to some member of the oset is ignored.</p>
@@ -144,8 +152,6 @@ It is not necessary for them to provide a hash function.</p>
 <p>The <code>oset-delete-all</code> procedure is the same as <code>oset-delete</code>, except that it accepts a single argument which is a list of elements to be deleted.</p>
 
 <p><code>(oset-pop </code><em>oset</em> [ <em>failure</em> ])</code></p>
-
-<p><code>(oset-pop/reverse </code><em>oset</em> [ <em>failure</em> ])</code></p>
 
 
 <p>The <code>oset-pop</code> procedure chooses the
@@ -161,17 +167,13 @@ then <em>failure</em> is invoked in tail context on no
 arguments and its values returned.  Otherwise, it is an error.
 </p>
 
-<p>The <code>oset-pop/reverse</code> procedure is the same as
-<code>oset-pop</code> except that it chooses the largest element.
-</p>
-
 <h3 id="Thewholeset">The whole oset</h3><p><code>(oset-size </code><em>oset</em><code>)</code></p><p>
 
 Returns the number of elements in <em>oset</em> as an exact integer.
 
 </p><p><code>(oset-find </code><em>predicate oset failure</em><code>)</code></p><p>
 
-Returns the first element of <em>oset</em> that satisfies <em>predicate</em>, or the result of invoking <em>failure</em> with no arguments if there is none.
+Returns the first element of <em>oset</em> that satisfies <em>predicate</em>, or the result of invoking the single-valued thunk <em>failure</em> if there is none.
 </p><p><code>(oset-count </code><em>predicate oset</em><code>)</code></p><p>
 
 Returns the number of elements of <em>oset</em> that satisfy <em>predicate</em> as an exact integer.
@@ -231,8 +233,7 @@ efficiently than <code>oset-map</code>.
 
 <p>Equivalent
 to <code>(oset-fold <em>proc</em> <em>nil</em> <em>oset</em>)</code>
-except that the associations are processed in reverse order with
-respect to the natural ordering of the elements.
+except that the elements are processed in reverse order.
 </p>
 
 <p><code>(oset-filter </code><em>predicate oset</em><code>)</code></p>
@@ -315,7 +316,7 @@ Returns <code>#t</code> if each <em>oset</em> other than the last is a superset 
 </p><p><code>(oset-xor </code><em>oset<sub>1</sub> oset<sub>2</sub></em><code>)</code></p><p>
 
 
-Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.
+Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.  It is an error unless all element comparators are the same.
 
 <h2 id="Singleelements">Single elements</h2>
 
@@ -343,7 +344,7 @@ the thunk <em>failure</em>.
 <p><code>(oset-range&lt;= <em>oset</em> <em>obj</em>)</code></p>
 <p><code>(oset-range>= <em>oset</em> <em>obj</em>)</code></p>
 
-<p>Returns a oset containing only the elements of
+<p>Returns an oset containing only the elements of
 the <em>oset</em> whose elements are equal to, less
 than, greater than, less than or equal to, or greater than or equal
   to <em>obj</em> (in the sense of the comparator of <em>oset</em>).

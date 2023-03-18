@@ -25,7 +25,7 @@
   (export oset oset-unfold
 	  oset? oset-contains? oset-empty? oset-disjoint?
 	  oset-member oset-element-comparator
-	  oset-adjoin oset-delete oset-delete-all oset-pop
+	  oset-adjoin oset-adjoin/replace oset-delete oset-delete-all oset-pop
 	  oset-size oset-find oset-count oset-any? oset-every?
 	  oset-map oset-for-each oset-fold oset-fold/reverse
 	  oset-filter oset-remove oset-partition
@@ -42,7 +42,7 @@
 ;	  obag-unique-size obag-element-count obag-for-each-unique obag-fold-unique
   (import (scheme base)
 	  (scheme case-lambda)
-          (srfi 8)
+	  (scheme char)
           (srfi 128)
 	  (srfi 146))
   (include "153-impl.scm"))

@@ -1,8 +1,14 @@
 (import (scheme base))
 (import (scheme char))
+(import (scheme write))
+;(import (test))
 (import (chibi test))
 (import (srfi 153))
 (import (srfi 128))
+
+(define (oset-print o)
+  (write (oset->list o))
+  (newline))
 
 (define default-comparator (make-default-comparator))
 
@@ -42,10 +48,12 @@
 ; oset3 = oset4 = {100, 200, 300, 400, 500}
 ; oset3 settable, oset4 not settable
 (define oset3 (oset-unfold
-                (lambda (x) (= x 1))
+                (lambda (x) (< x 1))
                 (lambda (x) (* x 100))
                 (lambda (x) (- x 1))
                 5 number-comparator))
+
+(oset-print oset3)
 
 (define oset4 (oset-unfold
                 (lambda (x) (= x 5))
@@ -115,7 +123,7 @@
 
 (test 1 (oset-member oset1 1 (failure)))
 (test 'fail (oset-member oset1 100 (failure)))
-(test "a" (oset-member oset5 "A" (failure)))
+(test-equal string-ci=? "a" (oset-member oset5 "A" (failure)))
 (test 'fail (oset-member oset5 "z" (failure)))
 
 (test-equal eq? number-comparator (oset-element-comparator oset4))
@@ -132,7 +140,7 @@
 (test oset5 (oset-adjoin oset5 "A"))
 
 ; oset5 = {"A", "b", "c", "d", "e"}
-(test oset5 (oset "A" "b" "c" "d" "e"))
+(test-equal string-ci= oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
 
 (test (oset number-comparator 1 2 3) (oset-delete oset1 4 5))
 (test (oset number-comparator 1 2 3) (oset-delete-all (list 4 5)))
@@ -146,17 +154,17 @@
 (test 'fail (oset-pop oset0 (lambda () failure)))
 (test 'fail (oset-pop oset0 (lambda () failure)))
 
-(test-values (values (oset 2 3 4 5 6 7) 1) (oset-pop oset2 failure))
+(test-values (values (oset number-comparator  3 4 5 6 7) 1) (oset-pop oset2 failure))
 
 (set! vlist (call-with-values (lambda () (oset-pop oset2 failure)) list))
 ; oset2 = {2, 3, 4, 5, 6, 7}
 (set! oset2 (car vlist))
-(test oset2 (oset 2 3 4 5 6 7))
+(test oset2 (oset number-comparator 2 3 4 5 6 7))
 (test 1 (cadr vlist))
 
 ; oset2 = {2, 3, 4, 5, 6}
 (set! oset2 (car vlist))
-(test oset2 (oset 2 3 4 5 6))
+(test oset (oset number-comparator 2 3 4 5 6))
 (test 7 (cadr vlist))
 )
 
@@ -185,7 +193,8 @@
       (let ((r '()))
         (oset-for-each
           (lambda (i) (set! r (cons i r)))
-          oset6)))
+          oset6))
+	r)
 
 (test 15 (oset-fold + 0 oset6))
 (test "abcde" (oset-fold string-append "" oset7))

@@ -52,20 +52,28 @@
 (define (oset-delete-all oset elem-list)
   (S (mapping-delete-all (M oset) elem-list)))
 
+(define failval (list 'failval))
+
 (define oset-pop
   (case-lambda
-    ((oset) (oset-pop oset (lambda () (error "oset-pop failure"))))
-    ((oset fail) (receive (new-mapping key value) ; FIXME
-                   (mapping-pop (M oset) fail)
-                   (values (S new-mapping) key)))))
+    ((oset)
+       (oset-pop oset (lambda () (error "oset-pop failure"))))
+    ((oset fail)
+       (let-values (((key value mapping)
+                     (mapping-pop 
+		       (M oset)
+		       (lambda () (values failval failval failval)))))
+       (if (eq? key failval)
+          (fail)
+	  (values key (S mapping)))))))
 
 (define (oset-size oset)
   (mapping-size (M oset)))
 
 (define (oset-find pred oset failure)
-  (receive (key value)
-    (mapping-find (lambda (key value) (pred key)) (M oset) failure))
-    key)
+  (let-values (((key value)
+    (mapping-find (lambda (key value) (pred key)) (M oset) failure)))
+    key))
 
 (define (oset-count pred oset failure)
   (mapping-count (lambda (key value) (pred key)) (M oset) failure))
