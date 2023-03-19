@@ -143,7 +143,7 @@
 (test oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
 
 (test (oset number-comparator 1 2 3) (oset-delete oset1 4 5))
-(test (oset number-comparator 1 2 3) (oset-delete-all (list 4 5)))
+(test (oset number-comparator 1 2 3) (oset-delete-all oset1 (list 4 5)))
 ; oset1 = {1, 2, 3, 4}
 (set! oset1 (oset-delete oset1 5))
 (test oset1 (oset number-comparator 1 2 3 4))
@@ -151,8 +151,8 @@
 (set! oset1 (oset-delete-all oset1 (list 4)))
 (test oset1 (oset number-comparator 1 2 3))
 
-(test 'fail (oset-pop oset0 (lambda () failure)))
-(test 'fail (oset-pop oset0 (lambda () failure)))
+(test 'fail (oset-pop oset0 failure))
+(test 'fail (oset-pop oset0 failure))
 
 (test-values (values (oset number-comparator  3 4 5 6 7) 1) (oset-pop oset2 failure))
 
@@ -164,7 +164,7 @@
 
 ; oset2 = {2, 3, 4, 5, 6}
 (set! oset2 (car vlist))
-(test oset (oset number-comparator 2 3 4 5 6))
+(test oset2 (oset number-comparator 2 3 4 5 6))
 (test 7 (cadr vlist))
 )
 
@@ -193,8 +193,8 @@
       (let ((r '()))
         (oset-for-each
           (lambda (i) (set! r (cons i r)))
-          oset6))
-	r)
+          oset6)
+	r))
 
 (test 15 (oset-fold + 0 oset6))
 (test "abcde" (oset-fold string-append "" oset7))
