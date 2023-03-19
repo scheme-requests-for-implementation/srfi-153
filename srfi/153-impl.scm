@@ -67,6 +67,19 @@
           (fail)
 	  (values (S mapping) key))))))
 
+;; Inefficient; needs two traversals.
+(define oset-pop/reverse
+  (case-lambda
+    ((oset)
+       (oset-pop/reverse oset (lambda () (error "oset-pop/reverse failure"))))
+    ((oset fail)
+     ;; Catch a possible error from mapping-max-key. Unfortunately,
+     ;; this also catches everything else.
+     (guard (junk (else (fail)))
+       (let* ((m (M oset))
+              (high (mapping-max-key m)))
+         (values (S (mapping-range< m high)) high))))))
+
 (define (oset-size oset)
   (mapping-size (M oset)))
 
