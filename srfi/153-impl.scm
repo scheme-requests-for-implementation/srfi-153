@@ -47,7 +47,7 @@
   (S (apply mapping-adjoin (M oset) (alternate elems 1))))
 
 (define (oset-delete oset . elems)
-  (oset-delete-all (M oset) elems))
+  (oset-delete-all oset elems))
 
 (define (oset-delete-all oset elem-list)
   (S (mapping-delete-all (M oset) elem-list)))
