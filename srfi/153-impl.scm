@@ -80,14 +80,14 @@
       (failure)
       key)))
 
-(define (oset-count pred oset failure)
-  (mapping-count (lambda (key value) (pred key)) (M oset) failure))
+(define (oset-count pred oset)
+  (mapping-count (lambda (key value) (pred key)) (M oset)))
 
-(define (oset-any? pred oset failure)
-  (mapping-any? (lambda (key value) (pred key)) (M oset) failure))
+(define (oset-any? pred oset)
+  (mapping-any? (lambda (key value) (pred key)) (M oset)))
 
-(define (oset-every? pred oset failure)
-  (mapping-every? (lambda (key value) (pred key)) (M oset) failure))
+(define (oset-every? pred oset)
+  (mapping-every? (lambda (key value) (pred key)) (M oset)))
 
 (define (oset-map proc comparator oset)
   (S (mapping-map (lambda (key value) (values (proc key) value)
