@@ -72,8 +72,13 @@
 
 (define (oset-find pred oset failure)
   (let-values (((key value)
-    (mapping-find (lambda (key value) (pred key)) (M oset) failure)))
-    key))
+                (mapping-find
+                  (lambda (key value) (pred key))
+                  (M oset)
+                  (lambda () (values failval failval)))))
+    (if (eq? key failval)
+      (failure)
+      key)))
 
 (define (oset-count pred oset failure)
   (mapping-count (lambda (key value) (pred key)) (M oset) failure))
