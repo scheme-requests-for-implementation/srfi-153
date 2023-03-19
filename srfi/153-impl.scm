@@ -90,17 +90,17 @@
   (mapping-every? (lambda (key value) (pred key)) (M oset)))
 
 (define (oset-map proc comparator oset)
-  (S (mapping-map (lambda (key value) (values (proc key) value)
-                 comparator (M oset)))))
+  (S (mapping-map (lambda (key value) (values (proc key) value))
+                 comparator (M oset))))
 
 (define (oset-for-each proc oset)
   (mapping-for-each (lambda (key value) (values (proc key) value)) (M oset)))
 
 (define (oset-fold proc nil oset)
-  (mapping-fold (lambda (key value) (values (proc key) value)) nil (M oset)))
+  (mapping-fold (lambda (key value acc) (proc key acc)) nil (M oset)))
 
 (define (oset-fold/reverse proc nil oset)
-  (mapping-fold/reverse (lambda (key value) (values (proc key) value)) nil (M oset)))
+  (mapping-fold/reverse (lambda (key value acc) (proc key acc)) nil (M oset)))
 
 (define (oset-filter pred oset)
   (mapping-filter (lambda (key value) (pred key)) (M oset)))
