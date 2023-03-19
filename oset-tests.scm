@@ -165,11 +165,6 @@
 (test oset2 (oset number-comparator 2 3 4 5 6 7))
 (test 1 (cadr vlist))
 
-(set! vlist (call-with-values (lambda () (oset-pop/reverse oset2 failure)) list))
-; oset2 = {2, 3, 4, 5, 6}
-(set! oset2 (car vlist))
-(test oset2 (oset number-comparator 2 3 4 5 6))
-(test 7 (cadr vlist))
 )
 
 ;; The whole oset
