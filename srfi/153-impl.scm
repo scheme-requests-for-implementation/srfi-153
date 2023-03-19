@@ -103,13 +103,17 @@
   (mapping-fold/reverse (lambda (key value acc) (proc key acc)) nil (M oset)))
 
 (define (oset-filter pred oset)
-  (mapping-filter (lambda (key value) (pred key)) (M oset)))
+  (S (mapping-filter (lambda (key value) (pred key)) (M oset))))
 
 (define (oset-remove pred oset)
-  (mapping-remove (lambda (key value) (pred key)) (M oset)))
+  (S (mapping-remove (lambda (key value) (pred key)) (M oset))))
 
 (define (oset-partition pred oset)
-  (mapping-partition (lambda (key value) (pred key)) (M oset)))
+  (let-values (((in out)
+                (mapping-partition
+                  (lambda (key value) (pred key))
+                  (M oset))))
+    (values (S in) (S out))))
 
 (define (oset->list oset)
   (map car (mapping->alist (M oset))))
