@@ -154,7 +154,10 @@
 (test 'fail (oset-pop oset0 failure))
 (test 'fail (oset-pop oset0 failure))
 
-(test-values (values (oset number-comparator  3 4 5 6 7) 1) (oset-pop oset2 failure))
+(test-assert
+  (let-values (((o x) (oset-pop oset2 failure)))
+    (and (oset=? o (oset number-comparator 2 3 4 5 6 7))
+         (= x 1))))
 
 (set! vlist (call-with-values (lambda () (oset-pop oset2 failure)) list))
 ; oset2 = {2, 3, 4, 5, 6, 7}
@@ -162,6 +165,7 @@
 (test oset2 (oset number-comparator 2 3 4 5 6 7))
 (test 1 (cadr vlist))
 
+(set! vlist (call-with-values (lambda () (oset-pop/reverse oset2 failure)) list))
 ; oset2 = {2, 3, 4, 5, 6}
 (set! oset2 (car vlist))
 (test oset2 (oset number-comparator 2 3 4 5 6))
@@ -186,8 +190,8 @@
 ;; Mapping and folding
 
 (test-group "osets/mapping"
-(test oset7 (oset-map string-ci-comparator symbol->string (oset eq-comparator 'a 'b 'c 'd 'e)))
-(test oset7 (oset-map string-ci-comparator symbol->string (oset eq-comparator 'a 'b 'c 'd 'e)))
+(test oset7 (oset-map symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
+(test oset7 (oset-map symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
 
 (test '(5 4 3 2 1)
       (let ((r '()))
@@ -197,7 +201,7 @@
 	r))
 
 (test 15 (oset-fold + 0 oset6))
-(test "abcde" (oset-fold string-append "" oset7))
+(test "edcba" (oset-fold string-append "" oset7))
 (test oset6 (oset-filter number? oset8))
 (test oset7 (oset-remove number? oset8))
 (set! vlist
