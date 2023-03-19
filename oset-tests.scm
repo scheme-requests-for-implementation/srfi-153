@@ -204,5 +204,7 @@
     (lambda () (oset-partition number? oset8))
     list))
 
-(test vlist (list oset6 oset7))
+(test-assert
+  (and (oset=? (car vlist) oset6)
+       (oset=? (cadr vlist) oset7)))
 )
