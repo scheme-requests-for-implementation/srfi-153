@@ -109,19 +109,19 @@
 (define (oset->list oset)
   (map car (mapping->alist (M oset))))
 
-(define (oset=? osets)
+(define (oset=? . osets)
   (S (apply mapping=? (map M osets))))
 
-(define (oset<? osets)
+(define (oset<? . osets)
   (S (apply mapping<? (map M osets))))
 
-(define (oset>? osets)
+(define (oset>? . osets)
   (S (apply mapping>? (map M osets))))
 
-(define (oset<=? osets)
+(define (oset<=? . osets)
   (S (apply mapping<=? (map M osets))))
 
-(define (oset>=? osets)
+(define (oset>=? . osets)
   (S (apply mapping>=? (map M osets))))
 
 (define (oset-union . osets)
