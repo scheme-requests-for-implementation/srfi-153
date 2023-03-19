@@ -65,7 +65,7 @@
 		       (lambda () (values failval failval failval)))))
        (if (eq? key failval)
           (fail)
-	  (values key (S mapping)))))))
+	  (values (S mapping) key))))))
 
 (define (oset-size oset)
   (mapping-size (M oset)))
