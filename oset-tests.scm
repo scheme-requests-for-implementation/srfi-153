@@ -140,7 +140,7 @@
 (test oset5 (oset-adjoin oset5 "A"))
 
 ; oset5 = {"A", "b", "c", "d", "e"}
-(test-equal string-ci=? oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
+(test oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
 
 (test (oset number-comparator 1 2 3) (oset-delete oset1 4 5))
 (test (oset number-comparator 1 2 3) (oset-delete-all (list 4 5)))
