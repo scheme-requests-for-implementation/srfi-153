@@ -27,14 +27,14 @@
 
 (define (failure) 'fail)
 
-(define default-test-comparator (current-test-comparator))
+(define default-test-equal? (current-test-comparator))
 
 (define (oset-equal? x y)
   (cond
     ((and (oset? x) (oset? y)) (oset=? x y))
     ((oset? x) #f)
     ((oset? y) #f)
-    (else (default-test-comparator x y))))
+    (else (default-test-equal? x y))))
 
 (current-test-comparator oset-equal?)
 
