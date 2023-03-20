@@ -32,7 +32,7 @@ John Cowan
 </ul>
 
 
-<h1>Abstract</h1><p><em>Osets</em> are immutable collections that can contain any Scheme objects, provided that a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset appear in a fixed order determined by the comparator used to create it.
+<h1>Abstract</h1><p><em>Osets</em> are immutable collections that can contain any Scheme objects as long as a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset appear in a fixed order determined by the comparator used to create it.
 
 </p>
 
@@ -72,7 +72,7 @@ as its previous state.</p>
 <p>It is an error if comparators used with the procedures of this SRFI do not provide an ordering predicate.
 It is not necessary for them to provide a hash function.</p>
 
-<p>The procedures of this SRFI are "pure functional" -- they do not alter their parameters.</p>
+<p>The procedures of this SRFI are "pure functional" — they do not alter their parameters.</p>
 
   
 <h2 id="Procedureindex">Procedure index</h2>
@@ -210,7 +210,7 @@ Returns <code>#t</code> if every element of <em>oset</em> satisfies <em>predicat
              => (oset string-ci-comparator "foo" "bar" "baz")
 </pre>
 
-<p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator's</em> equality predicate, and in this case duplicate elements are omitted as in the oset constructor.  For example:</p>
+<p>Note that, when <em>proc</em> defines a mapping that is not 1:1, some of the mapped objects may be equivalent in the sense of <em>comparator</em>'s equality predicate, and in this case duplicate elements are omitted as in the oset constructor.  For example:</p>
 
 <pre>
 (oset-map (lambda (x) (quotient x 2))
@@ -368,7 +368,7 @@ element.</p>
 <p><code>(oset-split <em>oset</em> <em>obj</em>)</code></p>
 
 <p>
-  Returns five values, equivalent to the results of invoking
+  Returns five values equivalent to the results of invoking
   <code>(oset-range&lt; <em>oset</em> <em>obj</em>)</code>,
   <code>(oset-range&lt;= <em>oset</em> <em>obj</em>)</code>,
   <code>(oset-range= <em>oset</em> <em>obj</em>)</code>,
