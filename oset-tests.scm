@@ -53,7 +53,6 @@
                 (lambda (x) (- x 1))
                 5 number-comparator))
 
-(oset-print oset3)
 
 (define oset4 (oset-unfold
                 (lambda (x) (= x 5))
@@ -62,7 +61,11 @@
                 1 number-comparator))
 
 ; oset5 = {"a", "b", "c", "d", "e"} case insensitive, settable
+; oset5a = {"A", "b", "c", "d", "e"} case insensitive, settable
+; oset5z = {"A", "b", "c", "d", "e", "Z"} case insensitive, settable
 (define oset5 (oset string-ci-comparator "a" "b" "c" "d" "e"))
+(define oset5a (oset string-ci-comparator "A" "b" "c" "d" "e"))
+(define oset5z (oset string-ci-comparator "A" "b" "c" "d" "e" "Z"))
 
 ; oset6 = {1, 2, 3, 4, 5} not settable
 (define oset6 (oset number-comparator 1 2 3 4 5))
@@ -75,6 +78,7 @@
 
 ;; Constructors
 
+(test-group "osets"
 (test-group "oset/constructors"
 (test-assert (oset-contains? oset1 1))
 (test-assert (oset-contains? oset1 2))
@@ -138,6 +142,8 @@
 (set! oset2 (oset-adjoin oset2 6 7))
 (test oset2 (oset number-comparator 1 2 3 4 5 6 7))
 (test oset5 (oset-adjoin oset5 "A"))
+(test oset5a (oset-adjoin/replace oset5 "A"))
+(test oset5z (oset-adjoin/replace oset5 "A" "Z"))
 
 ; oset5 = {"A", "b", "c", "d", "e"}
 (test oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
@@ -207,4 +213,4 @@
 (test-assert
   (and (oset=? (car vlist) oset6)
        (oset=? (cadr vlist) oset7)))
-)
+))

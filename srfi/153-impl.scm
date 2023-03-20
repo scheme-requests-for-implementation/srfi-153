@@ -46,6 +46,10 @@
 (define (oset-adjoin oset . elems)
   (S (apply mapping-adjoin (M oset) (alternate elems 1))))
 
+;; Inefficient; needs two traversals.
+(define (oset-adjoin/replace oset . elements)
+  (apply oset-adjoin (apply oset-delete oset elements) elements))
+
 (define (oset-delete oset . elems)
   (oset-delete-all oset elems))
 
