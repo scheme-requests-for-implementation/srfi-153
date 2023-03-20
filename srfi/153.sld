@@ -26,6 +26,7 @@
 	  oset? oset-contains? oset-empty? oset-disjoint?
 	  oset-member oset-element-comparator
 	  oset-adjoin oset-adjoin/replace oset-delete oset-delete-all oset-pop
+          oset-pop/reverse
 	  oset-size oset-find oset-count oset-any? oset-every?
 	  oset-map oset-for-each oset-fold oset-fold/reverse
 	  oset-filter oset-remove oset-partition

@@ -27,14 +27,14 @@
 
 (define (failure) 'fail)
 
-(define default-test-comparator (current-test-comparator))
+(define default-test-equal? (current-test-comparator))
 
 (define (oset-equal? x y)
   (cond
     ((and (oset? x) (oset? y)) (oset=? x y))
     ((oset? x) #f)
     ((oset? y) #f)
-    (else (default-test-comparator x y))))
+    (else (default-test-equal? x y))))
 
 (current-test-comparator oset-equal?)
 
@@ -140,10 +140,10 @@
 (test oset5 (oset-adjoin oset5 "A"))
 
 ; oset5 = {"A", "b", "c", "d", "e"}
-(test-equal string-ci= oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
+(test oset5 (oset string-ci-comparator "A" "b" "c" "d" "e"))
 
 (test (oset number-comparator 1 2 3) (oset-delete oset1 4 5))
-(test (oset number-comparator 1 2 3) (oset-delete-all (list 4 5)))
+(test (oset number-comparator 1 2 3) (oset-delete-all oset1 (list 4 5)))
 ; oset1 = {1, 2, 3, 4}
 (set! oset1 (oset-delete oset1 5))
 (test oset1 (oset number-comparator 1 2 3 4))
@@ -151,10 +151,13 @@
 (set! oset1 (oset-delete-all oset1 (list 4)))
 (test oset1 (oset number-comparator 1 2 3))
 
-(test 'fail (oset-pop oset0 (lambda () failure)))
-(test 'fail (oset-pop oset0 (lambda () failure)))
+(test 'fail (oset-pop oset0 failure))
+(test 'fail (oset-pop oset0 failure))
 
-(test-values (values (oset number-comparator  3 4 5 6 7) 1) (oset-pop oset2 failure))
+(test-assert
+  (let-values (((o x) (oset-pop oset2 failure)))
+    (and (oset=? o (oset number-comparator 2 3 4 5 6 7))
+         (= x 1))))
 
 (set! vlist (call-with-values (lambda () (oset-pop oset2 failure)) list))
 ; oset2 = {2, 3, 4, 5, 6, 7}
@@ -162,10 +165,6 @@
 (test oset2 (oset number-comparator 2 3 4 5 6 7))
 (test 1 (cadr vlist))
 
-; oset2 = {2, 3, 4, 5, 6}
-(set! oset2 (car vlist))
-(test oset (oset number-comparator 2 3 4 5 6))
-(test 7 (cadr vlist))
 )
 
 ;; The whole oset
@@ -186,18 +185,18 @@
 ;; Mapping and folding
 
 (test-group "osets/mapping"
-(test oset7 (oset-map string-ci-comparator symbol->string (oset eq-comparator 'a 'b 'c 'd 'e)))
-(test oset7 (oset-map string-ci-comparator symbol->string (oset eq-comparator 'a 'b 'c 'd 'e)))
+(test oset7 (oset-map symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
+(test oset7 (oset-map symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
 
 (test '(5 4 3 2 1)
       (let ((r '()))
         (oset-for-each
           (lambda (i) (set! r (cons i r)))
-          oset6))
-	r)
+          oset6)
+	r))
 
 (test 15 (oset-fold + 0 oset6))
-(test "abcde" (oset-fold string-append "" oset7))
+(test "edcba" (oset-fold string-append "" oset7))
 (test oset6 (oset-filter number? oset8))
 (test oset7 (oset-remove number? oset8))
 (set! vlist
@@ -205,5 +204,7 @@
     (lambda () (oset-partition number? oset8))
     list))
 
-(test vlist (list oset6 oset7))
+(test-assert
+  (and (oset=? (car vlist) oset6)
+       (oset=? (cadr vlist) oset7)))
 )

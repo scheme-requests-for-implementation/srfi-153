@@ -47,7 +47,7 @@
   (S (apply mapping-adjoin (M oset) (alternate elems 1))))
 
 (define (oset-delete oset . elems)
-  (oset-delete-all (M oset) elems))
+  (oset-delete-all oset elems))
 
 (define (oset-delete-all oset elem-list)
   (S (mapping-delete-all (M oset) elem-list)))
@@ -59,69 +59,91 @@
     ((oset)
        (oset-pop oset (lambda () (error "oset-pop failure"))))
     ((oset fail)
-       (let-values (((key value mapping)
+       (let-values (((mapping key value)
                      (mapping-pop 
 		       (M oset)
 		       (lambda () (values failval failval failval)))))
        (if (eq? key failval)
           (fail)
-	  (values key (S mapping)))))))
+	  (values (S mapping) key))))))
+
+;; Inefficient; needs two traversals.
+(define oset-pop/reverse
+  (case-lambda
+    ((oset)
+       (oset-pop/reverse oset (lambda () (error "oset-pop/reverse failure"))))
+    ((oset fail)
+     ;; Catch a possible error from mapping-max-key. Unfortunately,
+     ;; this also catches everything else.
+     (guard (junk (else (fail)))
+       (let* ((m (M oset))
+              (high (mapping-max-key m)))
+         (values (S (mapping-range< m high)) high))))))
 
 (define (oset-size oset)
   (mapping-size (M oset)))
 
 (define (oset-find pred oset failure)
   (let-values (((key value)
-    (mapping-find (lambda (key value) (pred key)) (M oset) failure)))
-    key))
+                (mapping-find
+                  (lambda (key value) (pred key))
+                  (M oset)
+                  (lambda () (values failval failval)))))
+    (if (eq? key failval)
+      (failure)
+      key)))
 
-(define (oset-count pred oset failure)
-  (mapping-count (lambda (key value) (pred key)) (M oset) failure))
+(define (oset-count pred oset)
+  (mapping-count (lambda (key value) (pred key)) (M oset)))
 
-(define (oset-any? pred oset failure)
-  (mapping-any? (lambda (key value) (pred key)) (M oset) failure))
+(define (oset-any? pred oset)
+  (mapping-any? (lambda (key value) (pred key)) (M oset)))
 
-(define (oset-every? pred oset failure)
-  (mapping-every? (lambda (key value) (pred key)) (M oset) failure))
+(define (oset-every? pred oset)
+  (mapping-every? (lambda (key value) (pred key)) (M oset)))
 
 (define (oset-map proc comparator oset)
-  (S (mapping-map (lambda (key value) (values (proc key) value)
-                 comparator (M oset)))))
+  (S (mapping-map (lambda (key value) (values (proc key) value))
+                 comparator (M oset))))
 
 (define (oset-for-each proc oset)
   (mapping-for-each (lambda (key value) (values (proc key) value)) (M oset)))
 
 (define (oset-fold proc nil oset)
-  (mapping-fold (lambda (key value) (values (proc key) value)) nil (M oset)))
+  (mapping-fold (lambda (key value acc) (proc key acc)) nil (M oset)))
 
 (define (oset-fold/reverse proc nil oset)
-  (mapping-fold/reverse (lambda (key value) (values (proc key) value)) nil (M oset)))
+  (mapping-fold/reverse (lambda (key value acc) (proc key acc)) nil (M oset)))
 
 (define (oset-filter pred oset)
-  (mapping-filter (lambda (key value) (pred key)) (M oset)))
+  (S (mapping-filter (lambda (key value) (pred key)) (M oset))))
 
 (define (oset-remove pred oset)
-  (mapping-remove (lambda (key value) (pred key)) (M oset)))
+  (S (mapping-remove (lambda (key value) (pred key)) (M oset))))
 
 (define (oset-partition pred oset)
-  (mapping-partition (lambda (key value) (pred key)) (M oset)))
+  (let-values (((in out)
+                (mapping-partition
+                  (lambda (key value) (pred key))
+                  (M oset))))
+    (values (S in) (S out))))
 
 (define (oset->list oset)
   (map car (mapping->alist (M oset))))
 
-(define (oset=? comp . osets)
+(define (oset=? . osets)
   (S (apply mapping=? (map M osets))))
 
-(define (oset<? comp . osets)
+(define (oset<? . osets)
   (S (apply mapping<? (map M osets))))
 
-(define (oset>? comp . osets)
+(define (oset>? . osets)
   (S (apply mapping>? (map M osets))))
 
-(define (oset<=? comp . osets)
+(define (oset<=? . osets)
   (S (apply mapping<=? (map M osets))))
 
-(define (oset>=? comp . osets)
+(define (oset>=? . osets)
   (S (apply mapping>=? (map M osets))))
 
 (define (oset-union . osets)
