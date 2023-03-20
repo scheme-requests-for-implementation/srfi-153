@@ -1,24 +1,17 @@
-<!DOCTYPE HTML PUBLIC "" "-//W3C//DTD HTML 3.2 Final//EN">
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>SRFI 153: Ordered Sets</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/srfi.css" type="text/css" />
+    <meta charset="utf-8">
+    <title>SRFI 153: Ordered sets</title>
     <link href="/favicon.png" rel="icon" sizes="192x192" type="image/png">
-  </head>
-<body>
+    <link rel="stylesheet" href="https://srfi.schemers.org/srfi.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+  <body>
+    <h1><a href="https://srfi.schemers.org/"><img class="srfi-logo" src="https://srfi.schemers.org/srfi-logo.svg" alt="SRFI surfboard logo" /></a>153: Ordered sets</h1>
 
-<H1>Title</H1>
+<p>by John Cowan</p>
 
-Ordered sets
-
-<H1>Author</H1>
-
-John Cowan
-
-<p>
-<h1>Status</h1>
+<h2>Status</h2>
 
 <p>This SRFI is currently in <em>draft</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="http://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-153">archive</a>.</p>
 <ul>
@@ -29,18 +22,18 @@ John Cowan
   <li>Draft #3 published: 2018-03-06</li>
   <li>Draft #4 published: 2018-07-08</li>
   <li>Withdrawn: 2018-07-08</li>
+  <li>Draft #4 published: 2018-07-08</li>
 </ul>
 
+<h2>Abstract</h2>
 
-<h1>Abstract</h1><p><em>Osets</em> are immutable collections that can contain any Scheme objects as long as a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset appear in a fixed order determined by the comparator used to create it.
+<p><em>Osets</em> are immutable collections that can contain any Scheme objects as long as a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset appear in a fixed order determined by the comparator used to create it.</p>
 
-</p>
-
-<h1>Issues</h1>
+<h2>Issues</h2>
 
 None at present.
 
-<h1>Rationale</h1>
+<h2>Rationale</h2>
 
 <p>The names in this SRFI are harmonized with the names used in SRFI 113 and
 <a href="https://srfi.schemers.org/srfi-146/srfi-146.html">SRFI 146</a>.
@@ -54,7 +47,7 @@ None at present.
 <p>In Java and Smalltalk terminology, the sets of this SRFI are sorted
 (in the sense of the comparator) rather than ordered (by insertion).</p>
 
-<h1>Specification</h1>
+<h2>Specification</h2>
 
 <p>Osets are disjoint from other types of Scheme objects.</p>
 
@@ -75,7 +68,7 @@ It is not necessary for them to provide a hash function.</p>
 <p>The procedures of this SRFI are "pure functional" — they do not alter their parameters.</p>
 
 
-<h2 id="Procedureindex">Procedure index</h2>
+<h3 id="Procedureindex">Procedure index</h3>
 
 <ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset/ordered</code>, <code>oset-unfold</code>, <code>oset-unfold/ordered</code></p>
 </li><li><p><a href="#Predicates">Predicates</a>: <code>oset?</code>, <code>oset-contains?</code>, <code>oset-empty?</code>, <code>oset-disjoint?</code></p>
@@ -93,9 +86,9 @@ It is not necessary for them to provide a hash function.</p>
 
 </ul>
 
-<h2 id="Osetprocedures">Oset procedures</h2>
+<h3 id="Osetprocedures">Oset procedures</h3>
 
-<h3 id="Constructors">Constructors</h3>
+<h4 id="Constructors">Constructors</h4>
 
 <p><code>(oset </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
@@ -116,7 +109,7 @@ May be implemented more efficiently than <code>oset</code>.</p>
 <p>The same as <code>oset-unfold</code>, except that it is an error if the elements are not generated in order (in the sense of the comparator).
 May be implemented more efficiently than <code>oset</code>.</p>
 
-<h3 id="Predicates">Predicates</h3>
+<h4 id="Predicates">Predicates</h4>
 
 <p><code>(oset? </code><em>obj</em><code>)</code></p>
 
@@ -134,7 +127,7 @@ May be implemented more efficiently than <code>oset</code>.</p>
 
 <p>Returns <code>#t</code> if <em>oset<sub>1</sub></em> and <em>oset<sub>2</sub></em> have no elements in common and <code>#f</code> otherwise.</p>
 
-<h3 id="Accessors">Accessors</h3>
+<h4 id="Accessors">Accessors</h4>
 
 <p><code>(oset-member </code><em>oset element default</em><code>)</code></p>
 
@@ -144,7 +137,7 @@ May be implemented more efficiently than <code>oset</code>.</p>
 
 <p>Returns the comparator used to compare the elements of <em>oset</em>.</p>
 
-<h3 id="Updaters">Updaters</h3>
+<h4 id="Updaters">Updaters</h4>
 
 <p><code>(oset-adjoin </code><em>oset element</em> ...<code>)</code></p>
 
@@ -162,8 +155,8 @@ May be implemented more efficiently than <code>oset</code>.</p>
 
 <p>The <code>oset-delete-all</code> procedure is the same as <code>oset-delete</code>, except that it accepts a single argument which is a list of elements to be deleted.</p>
 
-<p><code>(oset-pop </code><em>oset</em> [ <em>failure</em> ])</code><br>
-<code>(oset-pop/reverse </code><em>oset</em> [ <em>failure</em> ])</code></p>
+<p><code>(oset-pop </code><em>oset</em> [ <em>failure</em> ])<br>
+<code>(oset-pop/reverse </code><em>oset</em> [ <em>failure</em> ])</p>
 
 <p>The <code>oset-pop</code> procedure chooses the
 smallest/largest element (in the sense of the comparator of <em>oset</em>)
@@ -178,7 +171,7 @@ then <em>failure</em> is invoked in tail context on no
 arguments and its values returned.  Otherwise, it is an error.
 </p>
 
-<h3 id="Thewholeset">The whole oset</h3><p><code>(oset-size </code><em>oset</em><code>)</code></p><p>
+<h4 id="Thewholeset">The whole oset</h4><p><code>(oset-size </code><em>oset</em><code>)</code></p><p>
 
 Returns the number of elements in <em>oset</em> as an exact integer.
 
@@ -199,7 +192,7 @@ Returns <code>#t</code> if every element of <em>oset</em> satisfies <em>predicat
 
 </p>
 
-<h3 id="Mappingandfolding">Mapping and folding</h3>
+<h4 id="Mappingandfolding">Mapping and folding</h4>
 
 <p><code>(oset-map </code><em>proc comparator oset</em><code>)</code></p>
 
@@ -262,23 +255,23 @@ except that the elements are processed in reverse order.
 
 <p>Returns two values: an oset with the same comparator as <em>oset</em> that contains just the elements of <em>oset</em> that satisfy <em>predicate</em>, and another oset, also with the same comparator,  that contains just the elements of <em>oset</em> that do not satisfy <em>predicate</em>.</p>
 
-<h3 id="Conversion">Conversion</h3>
+<h4 id="Conversion">Conversion</h4>
 
-</p><p><code>(oset->list </code><em>oset</em><code>)</code></p><p>
+<p><code>(oset->list </code><em>oset</em><code>)</code></p><p>
 
 Returns a newly allocated list containing the members of <em>oset</em> in order.
 
-</p><p><code>(list->oset </code><em>comparator list</em><code>)</code></p><p>
+<p><code>(list->oset </code><em>comparator list</em><code>)</code></p><p>
 
 Returns an oset, created as if by <code>oset</code> using <em>comparator</em>, that contains the elements of <em>list</em>.  Duplicate elements (in the sense of the equality predicate) are omitted.</p>
 
-</p><p><code>(list->oset/ordered </code><em>comparator list</em><code>)</code></p><p>
+<p><code>(list->oset/ordered </code><em>comparator list</em><code>)</code></p><p>
 
 <p>The same as <code>list-&gt;oset</code>, except that it is an error if the elements of <em>list</em> are not in order
 (in the sense of the comparator).
 May be implemented more efficiently than <code>list-&gt;oset</code>.</p>
 
-</p><h3 id="Subsets">Subsets</h3>
+<h4 id="Subsets">Subsets</h4>
 
 <p>None of these five predicates produces a total order on osets.  In particular, <code>oset=?</code>, <code>oset&lt;?</code>, and <code>oset>?</code> do not obey the trichotomy law.</p>
 
@@ -320,7 +313,7 @@ Returns <code>#t</code> if each <em>oset</em> other than the last is a superset 
 
 </p>
 
-<h3 id="Settheoreticoperations">Set theoretic operations</h3>
+<h4 id="Settheoreticoperations">Set theoretic operations</h4>
 
 <p><code>(oset-union </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code><br>
 <code>(oset-intersection </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code><br>
@@ -329,7 +322,7 @@ Returns <code>#t</code> if each <em>oset</em> other than the last is a superset 
 
 <p>Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.  It is an error unless all element comparators are the same.
 
-<h2 id="Singleelements">Single elements</h2>
+<h3 id="Singleelements">Single elements</h3>
 
 <p><code>(oset-min-element <em>oset</em>)</code></p>
 <p><code>(oset-max-element <em>oset</em>)</code></p>
@@ -347,7 +340,7 @@ elements.  If no such element is contained in <em>oset</em>
 because <em>oset</em> is empty), returns the result of tail-calling
 the thunk <em>failure</em>.
 
-<h2 id="Dividingosets">Dividing osets</h2>
+<h3 id="Dividingosets">Dividing osets</h3>
 
 <p><code>(oset-range= <em>oset</em> <em>obj</em>)</code><br>
 <code>(oset-range&lt; <em>oset</em> <em>obj</em>)</code><br>
@@ -379,27 +372,27 @@ element.</p>
 </p>
 
 <p><code>(oset-catenate comparator <em>oset</em><sub>1</sub> <em>element</em>
-    <em>oset</em></sub>2</sub>)</code></p>
+    <em>oset</em><sub>2</sub>)</code></p>
 
 <p>
 Returns an oset using the
 comparator <em>comparator</em> whose elements
 are the union of the elements of the
-oset <em>oset</em><sub>1</sub></code>,
+oset <em>oset</em><sub>1</sub>,
 an oset containing only <em>element</em>,
-and the elements of <em>oset</em><sub>2</sub></code>.  It is an error if the elements
-contained in <em>oset</em><sub>1</sub></code> in their
+and the elements of <em>oset</em><sub>2</sub>.  It is an error if the elements
+contained in <em>oset</em><sub>1</sub> in their
 natural order, the element <em>element</em>, and the elements contained
-in <em>oset</em><sub>2</sub></code> in their natural order
+in <em>oset</em><sub>2</sub> in their natural order
 (in that order) do not form a strictly monotone sequence with respect
 to the ordering of <em>comparator</em>.
 </p>
 
-</p><h1>Implementation</h1>
+<h2>Implementation</h2>
 
 <p>The sample implementation is in the repository of this SRFI.</p>
 
-<h1>Acknowledgements</h1>
+<h2>Acknowledgements</h2>
 
 <p>Thanks are due to the members of the SRFI 153 mailing list.
 In addition, without SRFI 146 by Arthur Gleckler and Marc Nieper-Wißkirchen
@@ -407,31 +400,31 @@ the implementation of this SRFI would have been much more difficult.
 Wolfgang Corcoran-Mathe found and fixed a large list of small bugs,
 without which this SRFI might never have been completed.</p>
 
-<h1>Copyright</h1>
+<h2>Copyright</h2>
 
-<p>Copyright &copy; John Cowan 2018, 2022, 2023. All Rights Reserved.</p>
+<p>&copy; 2018, 2022, 2023 John Cowan.</p>
 
-<p>Permission is hereby granted, free of charge, to any person obtaining a
-copy of this software and associated documentation files (the "Software"),
-to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:</p>
+<p>Permission is hereby granted, free of charge, to any person
+  obtaining a copy of this software and associated documentation files
+  (the "Software"), to deal in the Software without restriction,
+  including without limitation the rights to use, copy, modify, merge,
+  publish, distribute, sublicense, and/or sell copies of the Software,
+  and to permit persons to whom the Software is furnished to do so,
+  subject to the following conditions:</p>
 
-<p>The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.</p>
+<p>The above copyright notice and this permission notice (including
+  the next paragraph) shall be included in all copies or substantial
+  portions of the Software.</p>
 
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.</p>
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+  BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.</p>
 
-    <hr/>
-<address>Editor: <a href="mailto:srfi-editors at srfi dot schemers dot org">
-             Mike Sperber</a></address>
-
-
-</body></html>
+    <hr>
+<address>Editor: <a href="mailto:srfi-editors+at+srfi+dot+schemers+dot+org">
+             Arthur A. Gleckler</a> (originally Mike Sperber)</address></body></html>

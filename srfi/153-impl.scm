@@ -70,7 +70,7 @@
        (oset-pop oset (lambda () (error "oset-pop failure"))))
     ((oset fail)
        (let-values (((mapping key value)
-                     (mapping-pop 
+                     (mapping-pop
 		       (M oset)
 		       (lambda () (values failval failval failval)))))
        (if (eq? key failval)
