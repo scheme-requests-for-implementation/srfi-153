@@ -322,19 +322,12 @@ Returns <code>#t</code> if each <em>oset</em> other than the last is a superset 
 
 <h3 id="Settheoreticoperations">Set theoretic operations</h3>
 
-<p><code>(oset-union </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code>
+<p><code>(oset-union </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code><br>
+<code>(oset-intersection </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code><br>
+<code>(oset-difference </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code><br>
+<code>(oset-xor </code><em>oset<sub>1</sub> oset<sub>2</sub></em><code>)</code></p>
 
-
-</p><p><code>(oset-intersection </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code>
-
-
-</p><p><code>(oset-difference </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code>
-
-
-</p><p><code>(oset-xor </code><em>oset<sub>1</sub> oset<sub>2</sub></em><code>)</code></p><p>
-
-
-Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.  It is an error unless all element comparators are the same.
+<p>Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.  It is an error unless all element comparators are the same.
 
 <h2 id="Singleelements">Single elements</h2>
 
@@ -345,8 +338,8 @@ Return an oset that is the union, intersection, asymmetric difference, or symmet
   <em>oset</em> to be empty.
 </p>
 
-<p><code>(oset-element-predecessor <em>oset</em> <em>obj</em> <em>failure</em>)</code></p>
-<p><code>(oset-element-successor <em>oset</em> <em>obj</em> <em>failure</em>)</code></p>
+<p><code>(oset-element-predecessor <em>oset</em> <em>obj</em> <em>failure</em>)</code><br>
+<code>(oset-element-successor <em>oset</em> <em>obj</em> <em>failure</em>)</code></p>
 <p>Returns the element contained in the oset <em>oset</em> that
 immediately precedes/succeeds <em>obj</em> in the oset's order of
 elements.  If no such element is contained in <em>oset</em>
@@ -356,11 +349,11 @@ the thunk <em>failure</em>.
 
 <h2 id="Dividingosets">Dividing osets</h2>
 
-<p><code>(oset-range= <em>oset</em> <em>obj</em>)</code></p>
-<p><code>(oset-range&lt; <em>oset</em> <em>obj</em>)</code></p>
-<p><code>(oset-range> <em>oset</em> <em>obj</em>)</code></p>
-<p><code>(oset-range&lt;= <em>oset</em> <em>obj</em>)</code></p>
-<p><code>(oset-range>= <em>oset</em> <em>obj</em>)</code></p>
+<p><code>(oset-range= <em>oset</em> <em>obj</em>)</code><br>
+<code>(oset-range&lt; <em>oset</em> <em>obj</em>)</code><br>
+<code>(oset-range> <em>oset</em> <em>obj</em>)</code><br>
+<code>(oset-range&lt;= <em>oset</em> <em>obj</em>)</code><br>
+<code>(oset-range>= <em>oset</em> <em>obj</em>)</code></p>
 
 <p>Returns an oset containing only the elements of
 the <em>oset</em> whose elements are equal to, less
