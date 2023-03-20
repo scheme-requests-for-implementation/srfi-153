@@ -9,7 +9,7 @@ keywords: [[https://srfi.schemers.org/?keywords=data-structure][Data Structure]]
 
 This repository hosts [[https://srfi.schemers.org/srfi-153/][SRFI 153]]: Ordered Sets, a [[https://srfi.schemers.org/][Scheme Request for Implementation]].
 
-This SRFI is in /withdrawn/ status.
+This SRFI is in /draft/ status.
 
 The full documentation for this SRFI can be found in the [[https://srfi.schemers.org/srfi-153/srfi-153.html][SRFI Document]].
 
