@@ -43,7 +43,7 @@
 
 ; oset1 = oset2 = {1, 2, 3, 4, 5} both settable
 (define oset1 (oset number-comparator 5 4 3 2 1))
-(define oset2 (oset number-comparator 1 2 3 4 5))
+(define oset2 (oset/ordered number-comparator 1 2 3 4 5))
 
 ; oset3 = oset4 = {100, 200, 300, 400, 500}
 ; oset3 settable, oset4 not settable
@@ -54,7 +54,7 @@
                 5 number-comparator))
 
 
-(define oset4 (oset-unfold
+(define oset4 (oset-unfold/ordered
                 (lambda (x) (= x 5))
                 (lambda (x) (* x 100))
                 (lambda (x) (+ x 1))
@@ -75,6 +75,9 @@
 
 ; oset8 = {"a", "b", "c", "d", "e", 1, 2, 3, 4, 5}
 (define oset8 (oset default-comparator "a" "b" "c" "d" "e" 1 2 3 4 5))
+
+; oset9 = {1, 2}
+(define oset9 (oset number-comparator 1 2))
 
 ;; Constructors
 
@@ -158,12 +161,17 @@
 (test oset1 (oset number-comparator 1 2 3))
 
 (test 'fail (oset-pop oset0 failure))
-(test 'fail (oset-pop oset0 failure))
+(test 'fail (oset-pop/reverse oset0 failure))
 
 (test-assert
   (let-values (((o x) (oset-pop oset2 failure)))
     (and (oset=? o (oset number-comparator 2 3 4 5 6 7))
          (= x 1))))
+
+(test-assert
+  (let-values (((o x) (oset-pop/reverse oset2 failure)))
+    (and (oset=? o (oset number-comparator 1 2 3 4 5 6))
+         (= x 7))))
 
 (set! vlist (call-with-values (lambda () (oset-pop oset2 failure)) list))
 ; oset2 = {2, 3, 4, 5, 6, 7}
@@ -192,7 +200,7 @@
 
 (test-group "osets/mapping"
 (test oset7 (oset-map symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
-(test oset7 (oset-map symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
+(test oset7 (oset-map/monotone symbol->string string-ci-comparator (oset eq-comparator 'a 'b 'c 'd 'e)))
 
 (test '(5 4 3 2 1)
       (let ((r '()))
@@ -202,6 +210,8 @@
 	r))
 
 (test 15 (oset-fold + 0 oset6))
+(test 1 (oset-fold - 0 oset9))
+(test -1 (oset-fold/reverse - 0 oset9))
 (test "edcba" (oset-fold string-append "" oset7))
 (test oset6 (oset-filter number? oset8))
 (test oset7 (oset-remove number? oset8))
@@ -212,5 +222,5 @@
 
 (test-assert
   (and (oset=? (car vlist) oset6)
-       (oset=? (cadr vlist) oset7)))
-))
+       (oset=? (cadr vlist) oset7))))
+)

@@ -8,8 +8,14 @@
 (define (list->oset comp elems)
   (S (alist->mapping comp (map (lambda (elem) (cons elem 1)) elems))))
 
+(define (list->oset/ordered comp elems)
+  (S (alist->mapping/ordered comp (map (lambda (elem) (cons elem 1)) elems))))
+
 (define (oset comp . elems)
   (list->oset comp elems))
+
+(define (oset/ordered comp . elems)
+  (list->oset/ordered comp elems))
 
 (define (oset-unfold stop? mapper successor seed comp)
   (S (mapping-unfold stop? (lambda (seed) (values (mapper seed) 1))
@@ -108,6 +114,10 @@
 
 (define (oset-map proc comparator oset)
   (S (mapping-map (lambda (key value) (values (proc key) value))
+                 comparator (M oset))))
+
+(define (oset-map/monotone proc comparator oset)
+  (S (mapping-map/monotone (lambda (key value) (values (proc key) value))
                  comparator (M oset))))
 
 (define (oset-for-each proc oset)
