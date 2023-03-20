@@ -68,7 +68,25 @@
 (define oset5z (oset string-ci-comparator "A" "b" "c" "d" "e" "Z"))
 
 ; oset6 = {1, 2, 3, 4, 5} not settable
+; oset6s = {1, 2, 3, 4} not settable
+; oset6l = {1, 2, 3, 4, 5, 6} not settable
+; oset6e = {2, 4} not settable
+; oset6o = {1, 3, 5} not settable
+; oset6l = {1, 2} not settable
+; oset6m = {3} not settable
+; oset6h = {4, 5} not settable
+; oset6lm = {1, 2, 3} not settable
+; oset6mh = {3, 4, 5} not settable
 (define oset6 (oset number-comparator 1 2 3 4 5))
+(define oset6s (oset number-comparator 1 2 3 4))
+(define oset6l (oset number-comparator 1 2 3 4 5 6))
+(define oset6e (oset number-comparator 2 4))
+(define oset6o (oset number-comparator 1 3 5))
+(define oset6l (oset number-comparator 1 2))
+(define oset6m (oset number-comparator 3))
+(define oset6h (oset number-comparator 4 5))
+(define oset6lm (oset number-comparator 1 2 3))
+(define oset6mh (oset number-comparator 3 4 5))
 
 ; oset7 = {"a", "b", "c", "d", "e"} not settable
 (define oset7 (oset string-comparator "a" "b" "c" "d" "e"))
@@ -223,4 +241,41 @@
 (test-assert
   (and (oset=? (car vlist) oset6)
        (oset=? (cadr vlist) oset7))))
+
+(test-group "osets/conversions"
+(test '(100 200 300 400 500) (oset->list oset3))
+(test oset3 (list->oset number-comparator '(100 200 300 400 500)))
+(test oset3 (list->oset/ordered number-comparator '(100 200 300 400 500))))
+
+(test-group "osets/subsets"
+(test-assert (oset=? oset6 oset6))
+(test-assert (oset<? oset6s oset6))
+(test-assert (oset>? oset6 oset6l))
+(test-assert (oset<=? oset6s oset6))
+(test-assert (oset<=? oset6s oset6s))
+(test-assert (oset>=? oset6 oset6l))
+(test-assert (oset>=? oset6l oset6l)))
+
+(test-group "osets/setops"
+(test oset6 (oset-union oset6e oset6o))
+(test oset0 (oset-intersection oset6e oset6o))
+(test oset6e (oset-difference oset6 oset6o))
+(test (oset number-comparator 3 4 5 6)
+  (oset-xor (oset number-comparator 1 2 3 4)
+              (oset number-comparator 1 2 5 6))))
+
+(test-group "osets/single"
+(test 1 (oset-min-element oset6))
+(test 5 (oset-max-element oset6))
+(test 1 (oset-element-predecessor oset6 2 failure))
+(test 'fail (oset-element-predecessor oset6 1 failure))
+(test 5 (oset-element-successor oset6 4 failure))
+(test 'fail (oset-element-successor oset6 5 failure)))
+
+(test-group "osets/divide"
+(test oset6l (oset-range< oset6 3))
+(test oset6m (oset-range= oset6 3))
+(test oset6h (oset-range> oset6 3))
+(test oset6lm (oset-range<= oset6 3))
+(test oset6mh (oset-range>= oset6 3)))
 )

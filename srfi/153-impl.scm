@@ -178,11 +178,11 @@
 (define (oset-max-element oset)
   (mapping-max-key (M oset)))
 
-(define (oset-element-predecessor oset)
-  (mapping-key-predecessor (M oset)))
+(define (oset-element-predecessor oset obj failure)
+  (mapping-key-predecessor (M oset) obj failure))
 
-(define (oset-element-successor oset)
-  (mapping-key-successor (M oset)))
+(define (oset-element-successor oset obj failure)
+  (mapping-key-successor (M oset) obj failure))
 
 (define (oset-range= oset obj)
   (S (mapping-range= (M oset) obj)))
