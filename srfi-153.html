@@ -51,6 +51,44 @@ None at present.
 <p>In Java and Smalltalk terminology, the sets of this SRFI are sorted
 (in the sense of the comparator) rather than ordered (by insertion).</p>
 
+<h3>Rationale for <code>oset-accumulate</code></h3>
+
+<p>As well as sometimes leading to more compact
+expressions than the
+traditional three-procedure unfold, <code>oset-accumulate</code>
+may be more efficient when the programmer wants the value of each new seed
+to depend on the computed key and value.  For example,
+assume that we apply some procedure <em>f</em> to a seed <em>s</em> to get a
+element <em>e</em>, and that we also want to compute a new
+seed from <em>e</em>.  Using <code>oset-unfold</code>, we'd
+have no choice other than to compute <em>e</em> twice:</p>
+
+<pre class="example"><code>
+    (oset-unfold stop?
+                      f
+                      (lambda (s)
+                        (let* ((e (f s))
+                               ((s* …)))
+                            s*)))
+                      seed)</code></pre>
+
+<p>Using <code>oset-accumulate</code>, however, it's easy to write an
+equivalent unfold which computes <em>e</em> only once for
+each step:</p>
+
+<pre class="example"><code>
+    (oset-accumulate (lambda (terminate s)
+                            (if (stop? s)
+                                (terminate)
+                                (let* ((e (f s))
+                                       ((s* …)))
+                                    (values e s*)))))
+                          seed)</code></pre>
+
+<p>This may be preferable when <em>f</em> is expensive to apply or entails
+side effects.</p>
+<p>Per contra, calling <em>terminate</em> entails abandoning the current
+continuation, which may be more expensive than simply invoking <em>stop</em>.</p>
 <h2>Specification</h2>
 
 <p>Osets are disjoint from other types of Scheme objects.</p>
@@ -74,7 +112,7 @@ It is not necessary for them to provide a hash function.</p>
 
 <h3 id="Procedureindex">Procedure index</h3>
 
-<ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset/ordered</code>, <code>oset-unfold</code>, <code>oset-unfold/ordered</code></p>
+<ul><li><p><a href="#Constructors">Constructors</a>: <code>oset</code>, <code>oset/ordered</code>, <code>oset-unfold</code>, <code>oset-unfold/ordered</code>, <code>oset-accumulate</code></p>
 </li><li><p><a href="#Predicates">Predicates</a>: <code>oset?</code>, <code>oset-contains?</code>, <code>oset-empty?</code>, <code>oset-disjoint?</code></p>
 </li><li><p><a href="#Accessors">Accessors</a>: <code>oset-member</code>, <code>oset-element-comparator</code></p>
 </li><li><p><a href="#Updaters">Updaters</a>: <code>oset-adjoin</code>, <code>oset-adjoin/replace</code>, <code>oset-delete</code>, <code>oset-delete-all</code>, <code>oset-pop</code>, <code>oset-pop/reverse</code></p>
@@ -112,6 +150,39 @@ May be implemented more efficiently than <code>oset</code>.</p>
 
 <p>The same as <code>oset-unfold</code>, except that it is an error if the elements are not generated in order (in the sense of the comparator).
 May be implemented more efficiently than <code>oset</code>.</p>
+
+<p><code>(oset-accumulate</code>&nbsp;<em>proc comparator seed</em>₁ <em>seed</em>₂ …<code>) → oset</code></p>
+
+<p>Similar to <code>oset-unfold</code>, except that a single
+procedure controls the unfolding of a new oset.  Let <em>n</em>
+be the number of <em>seed</em>s.  The procedure <em>proc</em> is applied to a
+procedure <em>terminate</em> and the <em>seed</em>s, in that order, and is
+expected to return <em>n</em><code> + 1</code> values:
+a new element and <em>n</em> new seed values.  The element
+is added to the new oset, and unfolding continues
+with the new seeds.  If, instead, <em>terminate</em> is invoked on any
+number of arbitrary values, 
+then the new oset along with the arguments passed to <em>terminate</em>
+are returned from <code>oset-accumulate</code>.</p>
+
+<p>It is an error for the number of seeds to vary between steps of
+the unfolding process.  If different steps of this process produce
+equal elements (in the sense of the comparator), then the first such element
+prevails.</p>
+
+<p>Example:</p>
+<pre class="example"><code>
+    (let-values (((oset s)
+                  (oset-accumulate
+                   (lambda (terminate i)
+                     (if (&lt; i -3)
+                         (terminate 'finished)
+                         (values i (- i 1))))
+                   -1)))
+      (values oset-&gt;list oset) s))
+     ⇒ (-3 -2 -1)
+       finished
+</code></pre>
 
 <h4 id="Predicates">Predicates</h4>
 
