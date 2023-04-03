@@ -23,6 +23,7 @@
 
 (define-library (srfi 153)
   (export oset oset/ordered oset-unfold oset-unfold/ordered
+	  oset-accumulate
 	  oset? oset-contains? oset-empty? oset-disjoint?
 	  oset-member oset-element-comparator
 	  oset-adjoin oset-adjoin/replace oset-delete oset-delete-all
