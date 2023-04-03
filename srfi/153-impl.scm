@@ -33,7 +33,7 @@
                      (apply proc
                             (lambda objs (apply return (S m) objs))
                             seeds)))
-         (loop (mapping-adjoin m e) seeds*))))))
+         (loop (mapping-adjoin m e 1) seeds*))))))
 
 (define (oset-contains? oset elem)
   (mapping-contains? (M oset) elem))
