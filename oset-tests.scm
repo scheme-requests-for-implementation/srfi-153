@@ -120,6 +120,25 @@
 (test-assert (oset-contains? oset5 "a"))
 (test-assert (oset-contains? oset5 "A"))
 (test 10 (oset-size oset8))
+
+(test oset3 (oset-accumulate
+             (lambda (terminate i)
+               (if (> i 500)
+                   (terminate)
+                   (values i (+ i 100))))
+             number-comparator
+             100))
+
+(test-assert
+  (let-values (((set last)
+                (oset-accumulate
+                 (lambda (terminate i)
+                   (if (< i 1)
+                       (terminate i)
+                       (values (* i 100) (- i 1))))
+                 number-comparator
+                 5)))
+    (and (oset=? set oset4) (zero? last))))
 )
 
 ;; Predicates

@@ -25,6 +25,16 @@
   (S (mapping-unfold/ordered stop? (lambda (seed) (values (mapper seed) 1))
     successor seed comp)))
 
+(define (oset-accumulate proc comp . seeds)
+  (call-with-current-continuation
+   (lambda (return)
+     (let loop ((m (mapping comp)) (seeds seeds))
+       (let-values (((e . seeds*)
+                     (apply proc
+                            (lambda objs (apply return (S m) objs))
+                            seeds)))
+         (loop (mapping-adjoin m e 1) seeds*))))))
+
 (define (oset-contains? oset elem)
   (mapping-contains? (M oset) elem))
 
