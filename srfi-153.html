@@ -13,10 +13,9 @@
 
 <h2 id="status">Status</h2>
 
-<p>This SRFI is currently in <em>draft</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-153/">archive</a>.</p>
+<p>This SRFI is currently in <em>final</em> status.  Here is <a href="https://srfi.schemers.org/srfi-process.html">an explanation</a> of each status that a SRFI can hold.  To provide input on this SRFI, please send email to <code><a href="mailto:srfi+minus+153+at+srfi+dotschemers+dot+org">srfi-153@<span class="antispam">nospam</span>srfi.schemers.org</a></code>.  To subscribe to the list, follow <a href="https://srfi.schemers.org/srfi-list-subscribe.html">these instructions</a>.  You can access previous messages via the mailing list <a href="https://srfi-email.schemers.org/srfi-153/">archive</a>.</p>
 <ul>
   <li>Received: 2017-06-27</li>
-  <li>60-day deadline: 2017-08-27</li>
   <li>Draft #1 published: 2017-06-28</li>
   <li>Draft #2 published: 2017-07-15</li>
   <li>Draft #3 published: 2018-03-06</li>
@@ -25,18 +24,12 @@
   <li>Returned to draft status: 2023-03-20</li>
   <li>Draft #5 published: 2023-03-20</li>
   <li>Draft #6 published: 2023-04-05</li>
-  <li>John's <a href="https://github.com/johnwcowan/srfi-153">personal
-      Git repo for this SRFI</a> for reference while the SRFI is in
-    <em>draft</em> status (<a href="https://htmlpreview.github.io/?https://github.com/johnwcowan/srfi-153/blob/master/srfi-153.html">preview</a>)</li>
+  <li>Finalized: 2023-05-01</li>
 </ul>
 
 <h2>Abstract</h2>
 
 <p><em>Osets</em> are immutable collections that can contain any Scheme objects as long as a total order exists among the objects.  Osets enforce the constraint that no two elements can be the same in the sense of the oset's associated <em>equality predicate</em>. The elements in an oset appear in a fixed order determined by the comparator used to create it.</p>
-
-<h2>Issues</h2>
-
-None at present.
 
 <h2>Rationale</h2>
 
