@@ -40,14 +40,14 @@ None at present.
 
 <h2>Rationale</h2>
 
-<p>The names in this SRFI are harmonized with the names used in SRFI 113 and
-<a href="https://srfi.schemers.org/srfi-146/srfi-146.html">SRFI 146</a>.
+<p>The names in this SRFI are harmonized with the names used in <a href="https://srfi.schemers.org/srfi-113/">SRFI 113</a> and
+<a href="https://srfi.schemers.org/srfi-146/">SRFI 146</a>.
 
-<p>It's possible to use the general osets of this SRFI to contain characters, but the use of <a href="https://srfi.schemers.org/srfi-14/srfi-14.html">SRFI 14</a> is recommended instead. </p>
+<p>It's possible to use the general osets of this SRFI to contain characters, but the use of <a href="https://srfi.schemers.org/srfi-14/">SRFI 14</a> is recommended instead. </p>
 
-<p>Osets do not have a lexical syntax representation.  It's possible to use <a href="https://srfi.schemers.org/srfi-108/srfi-108.html">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
+<p>Osets do not have a lexical syntax representation.  It's possible to use <a href="https://srfi.schemers.org/srfi-108/">SRFI 108</a> quasi-literal constructors to create them in code, but this SRFI does not standardize how that is done.</p>
 
-<p>The interface to general osets depends on <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparators. Comparators conveniently package the equality predicate of the oset with the ordering predicate needed to implement the oset efficiently.</p>
+<p>The interface to general osets depends on <a href="https://srfi.schemers.org/srfi-128/">SRFI 128</a> comparators. Comparators conveniently package the equality predicate of the oset with the ordering predicate needed to implement the oset efficiently.</p>
 
 <p>In Java and Smalltalk terminology, the sets of this SRFI are sorted
 (in the sense of the comparator) rather than ordered (by insertion).</p>
@@ -66,12 +66,12 @@ have no choice other than to compute <em>e</em> twice:</p>
 
 <pre class="example"><code>
     (oset-unfold stop?
-                      f
-                      (lambda (s)
-                        (let* ((e (f s))
-                               ((s* …)))
-                            s*)))
-                      seed)</code></pre>
+                 f
+                 (lambda (s)
+                   (let* ((e (f s))
+                          ((s* …)))
+                       s*)))
+                 seed)</code></pre>
 
 <p>Using <code>oset-accumulate</code>, however, it's easy to write an
 equivalent unfold which computes <em>e</em> only once for
@@ -79,12 +79,12 @@ each step:</p>
 
 <pre class="example"><code>
     (oset-accumulate (lambda (terminate s)
-                            (if (stop? s)
-                                (terminate)
-                                (let* ((e (f s))
-                                       ((s* …)))
-                                    (values e s*)))))
-                          seed)</code></pre>
+                        (if (stop? s)
+                            (terminate)
+                            (let* ((e (f s))
+                                   ((s* …)))
+                                (values e s*)))))
+                        seed)</code></pre>
 
 <p>This may be preferable when <em>f</em> is expensive to apply or entails
 side effects.</p>
@@ -135,7 +135,7 @@ It is not necessary for them to provide a hash function.</p>
 
 <p><code>(oset </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
-<p>Returns an oset containing <em>elements</em>.  The <em>comparator</em> argument is a <a href="https://srfi.schemers.org/srfi-128/srfi-128.html">SRFI 128</a> comparator, which is used to control and distinguish the elements of the oset.
+<p>Returns an oset containing <em>elements</em>.  The <em>comparator</em> argument is a <a href="https://srfi.schemers.org/srfi-128/">SRFI 128</a> comparator, which is used to control and distinguish the elements of the oset.
 
 <p><code>(oset/ordered </code><em>comparator</em> <em>element</em> ... <code>)</code></p>
 
@@ -193,15 +193,15 @@ prevails.</p>
 
 <p><code>(oset-contains? </code><em>oset element</em><code>)</code></p>
 
-<p>Returns <code>#t</code> if <em>element</em> is a member of <em>oset</em> and <code>#f</code> otherwise.</p>
+<p>Returns <code>#t</code> if <em>element</em> is a member of <em>oset</em>, and <code>#f</code> otherwise.</p>
 
 <p><code>(oset-empty? </code><em>oset</em><code>)</code></p>
 
-<p>Returns <code>#t</code> if <em>oset</em> has no elements and <code>#f</code> otherwise.</p>
+<p>Returns <code>#t</code> if <em>oset</em> has no elements, and <code>#f</code> otherwise.</p>
 
 <p><code>(oset-disjoint? </code><em>oset<sub>1</sub> oset<sub>2</sub></em><code>)</code></p>
 
-<p>Returns <code>#t</code> if <em>oset<sub>1</sub></em> and <em>oset<sub>2</sub></em> have no elements in common and <code>#f</code> otherwise.</p>
+<p>Returns <code>#t</code> if <em>oset<sub>1</sub></em> and <em>oset<sub>2</sub></em> have no elements in common, and <code>#f</code> otherwise.</p>
 
 <h4 id="Accessors">Accessors</h4>
 
@@ -229,7 +229,7 @@ prevails.</p>
 
 <p><code>(oset-delete-all </code><em>oset element-list</em><code>)</code></p>
 
-<p>The <code>oset-delete-all</code> procedure is the same as <code>oset-delete</code>, except that it accepts a single argument which is a list of elements to be deleted.</p>
+<p>The <code>oset-delete-all</code> procedure is the same as <code>oset-delete</code>, except that it accepts a single argument, which is a list of elements to be deleted.</p>
 
 <p><code>(oset-pop </code><em>oset</em> [ <em>failure</em> ])<br>
 <code>(oset-pop/reverse </code><em>oset</em> [ <em>failure</em> ])</p>
@@ -260,7 +260,7 @@ Returns the number of elements of <em>oset</em> that satisfy <em>predicate</em> 
 
 </p><p><code>(oset-any? </code><em>predicate oset</em><code>)</code></p><p>
 
-Returns <code>#t</code> if any element of <em>oset</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the SRFI 1 analogue because it does not return an element of the oset.
+Returns <code>#t</code> if any element of <em>oset</em> satisfies <em>predicate</em>, or <code>#f</code> otherwise.  Note that this differs from the <a href="https://srfi.schemers.org/srfi-1/">SRFI 1</a> analogue because it does not return an element of the oset.
 
 </p><p><code>(oset-every? </code><em>predicate oset</em><code>)</code></p><p>
 
@@ -275,7 +275,9 @@ Returns <code>#t</code> if every element of <em>oset</em> satisfies <em>predicat
 <p>Applies <em>proc</em> to each element of <em>oset</em> in order and returns an oset, created as if by <code>(oset </code><em>comparator</em><code>)</code>, which contains the results of the applications.  For example:</p>
 
 <pre>
-        (oset-map string-ci-comparator symbol->string (oset eq-comparator 'foo 'bar 'baz))
+        (oset-map string-ci-comparator
+                  symbol->string
+                  (oset eq-comparator 'foo 'bar 'baz))
              => (oset string-ci-comparator "foo" "bar" "baz")
 </pre>
 
@@ -283,17 +285,17 @@ Returns <code>#t</code> if every element of <em>oset</em> satisfies <em>predicat
 
 <pre>
 (oset-map (lambda (x) (quotient x 2))
-         integer-comparator
-         (oset integer-comparator 1 2 3 4 5))
+          integer-comparator
+          (oset integer-comparator 1 2 3 4 5))
  => (oset integer-comparator 0 1 2)
 </pre>
 
 <p>If the elements are the same in the sense of <code>eqv?</code>, it is unpredictable which one will be preserved in the result.</p>
 
-<p><code>(oset-map/monotone <em>proc</em> <em>comparator</em> <em>oset</em>)</code></p>
+<p><code>(oset-map/monotone </code><em>proc</em> <em>comparator</em> <em>oset</em><code>)</code></p>
 
 <p>Equivalent
-to <code>(oset-map <em>proc</em> <em>comparator</em> <em>oset</em>)</code>,
+to <code>(oset-map </code><em>proc</em> <em>comparator</em> <em>oset</em><code>)</code>,
 but it is an error if <em>proc</em> does not induce a strictly
 monotone oset between the elements with respect to both the ordering of the
 comparator of <em>oset</em> and the ordering
@@ -309,10 +311,10 @@ efficiently than <code>oset-map</code>.
 
 <p>Invokes <em>proc</em> on each member of <em>oset</em> in order, passing the result of the previous invocation as a second argument.  For the first invocation, <em>nil</em> is used as the second argument.  Returns the result of the last invocation, or <em>nil</em> if there was no invocation.</p>
 
-<p><code>(oset-fold/reverse <em>proc</em> <em>nil</em> <em>oset</em>)</code></p>
+<p><code>(oset-fold/reverse </code><em>proc</em> <em>nil</em> <em>oset</em><code>)</code></p>
 
 <p>Equivalent
-to <code>(oset-fold <em>proc</em> <em>nil</em> <em>oset</em>)</code>
+to <code>(oset-fold </code><em>proc</em> <em>nil</em> <em>oset</em><code>)</code>
 except that the elements are processed in reverse order.
 </p>
 
@@ -396,7 +398,7 @@ Returns <code>#t</code> if each <em>oset</em> other than the last is a superset 
 <code>(oset-difference </code><em>oset<sub>1</sub> oset<sub>2</sub></em> ...<code>)</code><br>
 <code>(oset-xor </code><em>oset<sub>1</sub> oset<sub>2</sub></em><code>)</code></p>
 
-<p>Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.  It is an error unless all element comparators are the same.
+<p>Return an oset that is the union, intersection, asymmetric difference, or symmetric difference of the <em>osets</em>.  Asymmetric difference is extended to more than two osets by taking the difference between the first oset and the union of the others.  Symmetric difference is not extended beyond two osets.  Elements in the result oset are drawn from the first oset in which they appear.  It is an error if not all element comparators are the same.
 
 <h3 id="Singleelements">Single elements</h3>
 
@@ -471,7 +473,7 @@ to the ordering of <em>comparator</em>.
 <h2>Acknowledgements</h2>
 
 <p>Thanks are due to the members of the SRFI 153 mailing list.
-In addition, without SRFI 146 by Arthur Gleckler and Marc Nieper-Wißkirchen
+In addition, without SRFI 146, by Arthur A. Gleckler and Marc Nieper-Wißkirchen,
 the implementation of this SRFI would have been much more difficult.
 Wolfgang Corcoran-Mathe found and fixed a large list of small bugs,
 without which this SRFI might never have been completed.</p>
